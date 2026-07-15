@@ -62,7 +62,8 @@ public class JwtAuthenticationFilter implements Filter, JwtValidator {
     }
 
     /**
-     * Performs structural JWT validation: checks the token has 3 dot-separated Base64url-encoded parts.
+     * Performs structural JWT validation: checks the token has 3 dot-separated parts where
+     * the header and payload are valid Base64url-encoded JSON objects.
      * TODO: integrate real signature verification once slot-auth-service publishes its signing keys / JWKS endpoint
      */
     @Override
@@ -75,10 +76,14 @@ public class JwtAuthenticationFilter implements Filter, JwtValidator {
             return false;
         }
         try {
-            Base64.getUrlDecoder().decode(parts[0]);
-            Base64.getUrlDecoder().decode(parts[1]);
+            byte[] headerBytes = Base64.getUrlDecoder().decode(parts[0]);
+            byte[] payloadBytes = Base64.getUrlDecoder().decode(parts[1]);
+            // Validate that header and payload are parseable JSON objects
+            objectMapper.readValue(headerBytes, Map.class);
+            objectMapper.readValue(payloadBytes, Map.class);
+            // Signature part may use non-padded Base64url; just require it to be non-blank
             return !parts[2].isBlank();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IOException e) {
             return false;
         }
     }

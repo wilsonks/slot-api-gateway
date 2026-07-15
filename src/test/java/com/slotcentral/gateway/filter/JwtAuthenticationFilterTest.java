@@ -108,4 +108,21 @@ class JwtAuthenticationFilterTest {
         assertThat(filter.validate(null)).isFalse();
         assertThat(filter.validate("")).isFalse();
     }
+
+    @Test
+    void validateReturnsFalseWhenHeaderIsNotJson() {
+        // Parts are valid Base64url but not JSON objects
+        String notJson = Base64.getUrlEncoder().withoutPadding().encodeToString("not-json".getBytes());
+        String payload = Base64.getUrlEncoder().withoutPadding().encodeToString("{\"sub\":\"user1\"}".getBytes());
+        String sig = Base64.getUrlEncoder().withoutPadding().encodeToString("fakesig".getBytes());
+        assertThat(filter.validate(notJson + "." + payload + "." + sig)).isFalse();
+    }
+
+    @Test
+    void validateReturnsFalseWhenPayloadIsNotJson() {
+        String header = Base64.getUrlEncoder().withoutPadding().encodeToString("{\"alg\":\"HS256\"}".getBytes());
+        String notJson = Base64.getUrlEncoder().withoutPadding().encodeToString("not-json".getBytes());
+        String sig = Base64.getUrlEncoder().withoutPadding().encodeToString("fakesig".getBytes());
+        assertThat(filter.validate(header + "." + notJson + "." + sig)).isFalse();
+    }
 }
