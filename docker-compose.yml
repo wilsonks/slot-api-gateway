@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  slot-api-gateway:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      # Downstream service URLs — override once other services are running
+      # Expected to be overridden once sibling services exist
+      AUTH_SERVICE_URL: http://host.docker.internal:8081
+      GAME_CONTROLLER_SERVICE_URL: http://host.docker.internal:8082
+      GAME_ENGINE_SERVICE_URL: http://host.docker.internal:8083
+      BANK_SERVICE_URL: http://host.docker.internal:8084
+      FLOOR_SERVICE_URL: http://host.docker.internal:8085
+      JACKPOT_SERVICE_URL: http://host.docker.internal:8086
+      CONFIG_SERVICE_URL: http://host.docker.internal:8087
+      LOGGING_SERVICE_URL: http://host.docker.internal:8088
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

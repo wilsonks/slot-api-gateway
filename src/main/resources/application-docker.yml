@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.slotcentral.gateway: INFO
+    org.springframework.cloud.gateway: WARN
