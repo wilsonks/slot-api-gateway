@@ -76,7 +76,7 @@ public class RateLimitingFilter implements Filter {
         objectMapper.writeValue(response.getWriter(), body);
     }
 
-    static class TokenBucket {
+    private static class TokenBucket {
         private final int capacity;
         private final double refillRate;
         private double tokens;

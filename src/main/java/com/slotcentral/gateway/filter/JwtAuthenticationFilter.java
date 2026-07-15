@@ -29,8 +29,7 @@ public class JwtAuthenticationFilter implements Filter, JwtValidator {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private boolean isPublicPath(String path) {
-        return path.startsWith("/api/auth/") || path.equals("/api/auth")
-            || path.startsWith("/actuator/health") || path.equals("/actuator/health");
+        return path.startsWith("/api/auth") || path.startsWith("/actuator/health");
     }
 
     @Override

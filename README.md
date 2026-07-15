@@ -2,7 +2,7 @@
 
 **Spring Cloud Gateway MVC** — edge API gateway for the `slot-central` microservices platform.
 
-This service is part of the re-architecture of the [`slot-central-server-express-rmq`](https://github.com/wilsonks/slot-central-server-express-rmq) Node.js EGM (Electronic Gaming Machine) slot-floor backend into Spring Boot microservices.
+This service is part of the migration of the [`slot-central-server-express-rmq`](https://github.com/wilsonks/slot-central-server-express-rmq) Node.js EGM (Electronic Gaming Machine) slot-floor backend into Spring Boot microservices.
 
 ## Platform architecture
 
