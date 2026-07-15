@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: slot-api-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: auth-service
+            uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+            predicates:
+              - Path=/api/auth/**
+          - id: game-controller-service
+            uri: ${GAME_CONTROLLER_SERVICE_URL:http://localhost:8082}
+            predicates:
+              - Path=/api/game-controller/**
+          - id: game-engine-service
+            uri: ${GAME_ENGINE_SERVICE_URL:http://localhost:8083}
+            predicates:
+              - Path=/api/game-engine/**
+          - id: bank-service
+            uri: ${BANK_SERVICE_URL:http://localhost:8084}
+            predicates:
+              - Path=/api/bank/**
+          - id: floor-service
+            uri: ${FLOOR_SERVICE_URL:http://localhost:8085}
+            predicates:
+              - Path=/api/floor/**
+          - id: jackpot-service
+            uri: ${JACKPOT_SERVICE_URL:http://localhost:8086}
+            predicates:
+              - Path=/api/jackpot/**
+          - id: config-service
+            uri: ${CONFIG_SERVICE_URL:http://localhost:8087}
+            predicates:
+              - Path=/api/config/**
+          - id: logging-service
+            uri: ${LOGGING_SERVICE_URL:http://localhost:8088}
+            predicates:
+              - Path=/api/logs/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,gateway
+  endpoint:
+    health:
+      show-details: when-authorized
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+logging:
+  level:
+    com.slotcentral.gateway: INFO
+    org.springframework.cloud.gateway: INFO
