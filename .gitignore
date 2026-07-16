@@ -1,10 +1,6 @@
-.gradle/
-build/
-!gradle/wrapper/gradle-wrapper.jar
+target/
 *.class
 *.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
 ### IntelliJ IDEA ###
 .idea/

@@ -61,11 +61,12 @@ In-memory token-bucket rate limiting: 20-token bucket, refilling at 10 tokens/se
 
 ### Prerequisites
 - Java 21
+- Maven 3.9+
 - Docker (optional, for container-based runs)
 
-### `./gradlew bootRun`
+### `mvn spring-boot:run`
 ```bash
-./gradlew bootRun
+mvn spring-boot:run
 # Gateway starts on http://localhost:8080
 # Downstream services are expected on localhost:8081-8088 (or override via env vars)
 ```
@@ -79,8 +80,8 @@ docker-compose up --build
 
 ### Running tests
 ```bash
-./gradlew test
-# Test report: build/reports/tests/test/index.html
+mvn test
+# Test report: target/surefire-reports/
 ```
 
 ## Environment variables
