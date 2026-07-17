@@ -1,15 +1,12 @@
 # Build stage
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /workspace/app
 
-COPY gradle gradle
-COPY gradlew .
-COPY build.gradle .
-COPY settings.gradle .
-RUN ./gradlew dependencies --no-daemon 2>&1 | tail -5 || true
+COPY pom.xml .
+RUN mvn dependency:go-offline -q
 
 COPY src src
-RUN ./gradlew bootJar --no-daemon -x test
+RUN mvn package -DskipTests -q
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
@@ -17,7 +14,7 @@ WORKDIR /app
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-COPY --from=build /workspace/app/build/libs/*.jar app.jar
+COPY --from=build /workspace/app/target/*.jar app.jar
 
 USER appuser
 
